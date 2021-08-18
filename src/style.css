@@ -1,0 +1,70 @@
+.game {
+    position: relative;
+    width: 1520px;
+    height: 550px;
+    border-bottom: 1px solid #000;
+}
+
+#goose {
+    width: 100px;
+    height: 100px;
+    background-image: url(img/goose.png);
+    background-size: 100px 100px;
+    position: absolute;
+    top: 454px;
+    margin-left: 50px;
+}
+
+#bush {
+    width: 70px;
+    height: 80px;
+    background-image: url(img/bush.png);
+    background-size: 70px 80px;
+    position: relative;
+    top: 370px;
+    left: 1300px;
+    /* animation: bush 1s infinite linear; */
+}
+
+#score {
+    width: 70px;
+    height: 30px;
+    margin-left: 1390px;
+    margin-top: -180px;
+}
+
+.score {
+    font-size: 30px;
+    color: rgb(0, 130, 33);
+}
+
+@keyframes bush {
+    0% {
+        left: 580px;
+    }
+    100% {
+        left: -20px;
+    }
+}
+
+.jump {
+    animation: jump 0.3s linear;
+}
+
+@keyframes jump {
+    0% {
+        top: 380px;
+    }
+    30% {
+        top: 350px;
+    }
+    50% {
+        top: 280px;
+    }
+    80% {
+        top: 350px;
+    }
+    100% {
+        top: 380px;
+    }
+}
