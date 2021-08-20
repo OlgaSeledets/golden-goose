@@ -1,60 +1,83 @@
 const goose = document.getElementById('goose');
 const bush = document.getElementById('bush');
 const score = document.querySelector('.score');
+
+// const MaxVelocity = 50;
 let count = 0;
+let record = 0;
 
-document.addEventListener('keydown', function(event) {
-    const key = event.key;
-    if (key === 'Space' || key === 'ArrowUp') {
-        jump();
+const gooseData = {
+    MaxVelocity: 50,
+    initialPosition: goose.offsetTop,
+    g: 4,
+    gooseMass: 1.5,
+
+    gooseJump() {
+        document.body.addEventListener('keydown', event => {
+            const key = event.key;
+            if (key === ' ' || key === 'ArrowUp') {
+                jump();
+            }
+        });
     }
-});
+}
 
-const initialPosition = goose.offsetTop;
-const g = 4;
-const m = 1.5;
+gooseData.gooseJump();
+
+// document.body.addEventListener('keydown', event => {
+//     const key = event.key;
+//     if (key === ' ' || key === 'ArrowUp') {
+//         jump();
+//     }
+// });
+
+// const initialPosition = goose.offsetTop;
+// const g = 4;
+// const gooseMass = 1.5;
 let velocity = 0;
 
 function jump() {
-    velocity = 50;
-    // if (!goose.classList.contains('jump')) {
-    //     goose.classList.add('jump');
-    // }
-    // setTimeout(() => {
-    //     if (goose.classList.contains('jump')) {
-    //         goose.classList.remove('jump');
-    //     }
-    // }, 300)
-    // count++;
-    // score.textContent = count;
+    velocity = gooseData.MaxVelocity;
 }
 
-// setInterval(() => {
-//     let gooseTop = parseInt(window.getComputedStyle(goose).getPropertyValue('top'));
-//     let bushLeft = parseInt(window.getComputedStyle(bush).getPropertyValue('left'));
-
-//     if (bushLeft < 110 && bushLeft > 0 && gooseTop >= 420) {
-//         alert('GAME OVER');
-//         bush.style.display = 'none';
-//         setTimeout(() => {
-//             bush.style.display = 'block';
-//         }, 3000) 
-//         count = 0;
-//         score.textContent = count;
-//     }
-// }, 10);
 let t = 1;
 setInterval(() => {
     const pos = goose.offsetTop;
     let resultPos = pos
     if (velocity > 0) {
-        resultPos = initialPosition - (velocity * t - m * g * t * t / 2)
+        resultPos = gooseData.initialPosition - (velocity * t - gooseData.gooseMass * gooseData.g * t * t / 2)
         t++;
     }
-    if (resultPos >= initialPosition && velocity > 0) {
+    if (resultPos >= gooseData.initialPosition && velocity > 0) {
         t = 1;
         velocity = 0;
-        resultPos = initialPosition;
+        resultPos = gooseData.initialPosition;
     }
     goose.style.top = `${resultPos}px`
-}, 30)
+
+    let bushLeft = bush.offsetLeft;
+    if (bushLeft < 50 && bushLeft > 35) {
+        count++;
+        score.textContent = count;
+    }
+}, 25)
+
+let save = () => {
+    localStorage.score = score.textContent;
+}
+
+let isAlive = setInterval(() => {
+    let gooseTop = goose.offsetTop;
+    let bushLeft = bush.offsetLeft;
+    if (bushLeft < 130 && bushLeft > 0 && gooseTop >= 450) {
+        alert('GAME OVER');
+        record = count;
+        score.textContent = record;
+        save();
+        count = 0;
+        score.textContent = count;
+    }
+}, 10)
+
+
+
