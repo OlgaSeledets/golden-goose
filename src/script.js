@@ -1,10 +1,9 @@
+const background = document.querySelector('.background');
 const goose = document.getElementById('goose');
 const bush = document.getElementById('bush');
 const score = document.querySelector('.score');
 
-// const MaxVelocity = 50;
 let count = 0;
-let record = 0;
 
 const gooseData = {
     MaxVelocity: 50,
@@ -24,16 +23,6 @@ const gooseData = {
 
 gooseData.gooseJump();
 
-// document.body.addEventListener('keydown', event => {
-//     const key = event.key;
-//     if (key === ' ' || key === 'ArrowUp') {
-//         jump();
-//     }
-// });
-
-// const initialPosition = goose.offsetTop;
-// const g = 4;
-// const gooseMass = 1.5;
 let velocity = 0;
 
 function jump() {
@@ -55,29 +44,43 @@ setInterval(() => {
     }
     goose.style.top = `${resultPos}px`
 
-    let bushLeft = bush.offsetLeft;
-    if (bushLeft < 50 && bushLeft > 35) {
-        count++;
-        score.textContent = count;
-    }
 }, 25)
 
-let save = () => {
-    localStorage.score = score.textContent;
-}
+const color = ['white', '#222222', 'teal', '#483D88', 'lavender', '#ffc107']
+
+setInterval(() => {
+    let bushLeft = bush.offsetLeft;
+    //console.log(bush.getBoundingClientRect())
+    //console.log(bushLeft)
+    if (bushLeft >= -15 && bushLeft <= 10) {
+        count++;
+        score.textContent = count;
+
+        if (count % 5 === 0) {
+            let randomColor = Math.floor(Math.random() * color.length);
+            bush.style.left = '1300px'
+            background.style.background = `${color[randomColor]}`
+        }
+        if (count === 50) {
+            goose.style.backgroundImage = 'url(img/golden-goose.png)'
+        }
+     }
+}, 50)
 
 let isAlive = setInterval(() => {
     let gooseTop = goose.offsetTop;
     let bushLeft = bush.offsetLeft;
-    if (bushLeft < 130 && bushLeft > 0 && gooseTop >= 450) {
+    if (bushLeft <= 100 && bushLeft > 0 && gooseTop >= 450) {
         alert('GAME OVER');
-        record = count;
-        score.textContent = record;
-        save();
+        score.textContent = 'Score';
         count = 0;
-        score.textContent = count;
+        bush.style.animation = 'bush 2.5s infinite linear'
+        background.style.background = 'white'
+        i = 0
+        goose.style.backgroundImage = 'url(img/goose.png)'
     }
-}, 10)
+}, 0)
+
 
 
 
